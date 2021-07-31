@@ -1,0 +1,93 @@
+package(
+    default_visibility = ["//visibility:public"],
+)
+
+constraint_setting(
+    name = "gpu",
+    default_constraint_value = "unknown"
+)
+
+constraint_value(
+    name = "nvidia_sm20",
+    constraint_setting = ":gpu",
+)
+
+constraint_value(
+    name = "nvidia_sm21",
+    constraint_setting = ":gpu",
+)
+
+constraint_value(
+    name = "nvidia_sm30",
+    constraint_setting = ":gpu",
+)
+
+constraint_value(
+    name = "nvidia_sm35",
+    constraint_setting = ":gpu",
+)
+
+constraint_value(
+    name = "nvidia_sm37",
+    constraint_setting = ":gpu",
+)
+
+constraint_value(
+    name = "nvidia_sm50",
+    constraint_setting = ":gpu",
+)
+
+constraint_value(
+    name = "nvidia_sm52",
+    constraint_setting = ":gpu",
+)
+
+constraint_value(
+    name = "nvidia_sm53",
+    constraint_setting = ":gpu",
+)
+
+constraint_value(
+    name = "nvidia_sm60",
+    constraint_setting = ":gpu",
+)
+
+constraint_value(
+    name = "nvidia_sm61",
+    constraint_setting = ":gpu",
+)
+
+constraint_value(
+    name = "nvidia_sm62",
+    constraint_setting = ":gpu",
+)
+
+constraint_value(
+    name = "nvidia_sm70",
+    constraint_setting = ":gpu",
+)
+
+constraint_value(
+    name = "nvidia_sm72",
+    constraint_setting = ":gpu",
+)
+
+constraint_value(
+    name = "nvidia_sm75",
+    constraint_setting = ":gpu",
+)
+
+constraint_value(
+    name = "nvidia_sm80",
+    constraint_setting = ":gpu",
+)
+
+constraint_value(
+    name = "nvidia_sm86",
+    constraint_setting = ":gpu",
+)
+
+constraint_value(
+    name = "unknown",
+    constraint_setting = ":gpu",
+)

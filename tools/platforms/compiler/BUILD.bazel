@@ -1,0 +1,18 @@
+package(
+    default_visibility = ["//visibility:public"],
+)
+
+constraint_setting(
+    name = "cc",
+    default_constraint_value = "gcc"
+)
+
+constraint_value(
+    name = "gcc",
+    constraint_setting = ":cc",
+)
+
+constraint_value(
+    name = "clang",
+    constraint_setting = ":cc",
+)

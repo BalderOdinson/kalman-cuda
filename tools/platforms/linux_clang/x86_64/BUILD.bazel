@@ -1,0 +1,165 @@
+package(
+    default_visibility = ["//visibility:public"],
+)
+
+parent = "//tools/platforms:linux_clang_x86_64"
+
+platform(
+    name = "nvidia_sm20",
+    parents = [parent],
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        "//tools/platforms/gpu:nvidia_sm20",
+    ],
+)
+
+platform(
+    name = "nvidia_sm21",
+    parents = [parent],
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        "//tools/platforms/gpu:nvidia_sm21",
+    ],
+)
+
+platform(
+    name = "nvidia_sm30",
+    parents = [parent],
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        "//tools/platforms/gpu:nvidia_sm30",
+    ],
+)
+
+platform(
+    name = "nvidia_sm35",
+    parents = [parent],
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        "//tools/platforms/gpu:nvidia_sm35",
+    ],
+)
+
+platform(
+    name = "nvidia_sm37",
+    parents = [parent],
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        "//tools/platforms/gpu:nvidia_sm37",
+    ],
+)
+
+platform(
+    name = "nvidia_sm50",
+    parents = [parent],
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        "//tools/platforms/gpu:nvidia_sm50",
+    ],
+)
+
+platform(
+    name = "nvidia_sm52",
+    parents = [parent],
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        "//tools/platforms/gpu:nvidia_sm52",
+    ],
+)
+
+platform(
+    name = "nvidia_sm53",
+    parents = [parent],
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        "//tools/platforms/gpu:nvidia_sm53",
+    ],
+)
+
+platform(
+    name = "nvidia_sm60",
+    parents = [parent],
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        "//tools/platforms/gpu:nvidia_sm60",
+    ],
+)
+
+platform(
+    name = "nvidia_sm61",
+    parents = [parent],
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        "//tools/platforms/gpu:nvidia_sm61",
+    ],
+)
+
+platform(
+    name = "nvidia_sm62",
+    parents = [parent],
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        "//tools/platforms/gpu:nvidia_sm62",
+    ],
+)
+
+platform(
+    name = "nvidia_sm70",
+    parents = [parent],
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        "//tools/platforms/gpu:nvidia_sm70",
+    ],
+)
+
+platform(
+    name = "nvidia_sm72",
+    parents = [parent],
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        "//tools/platforms/gpu:nvidia_sm72",
+    ],
+)
+
+platform(
+    name = "nvidia_sm75",
+    parents = [parent],
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        "//tools/platforms/gpu:nvidia_sm75",
+    ],
+)
+
+platform(
+    name = "nvidia_sm80",
+    parents = [parent],
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        "//tools/platforms/gpu:nvidia_sm80",
+    ],
+)
+
+platform(
+    name = "nvidia_sm86",
+    parents = [parent],
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+        "//tools/platforms/gpu:nvidia_sm86",
+    ],
+)

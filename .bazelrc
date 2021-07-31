@@ -1,0 +1,9 @@
+# Linux clang
+build:clang_linux --crosstool_top=//tools/toolchain/cpp:crosstool --compiler=clang
+
+# Linux GCC
+build:gcc --crosstool_top=//tools/toolchain/cpp:crosstool --compiler=gcc
+build:gcc-10 --crosstool_top=//tools/toolchain/cpp:crosstool --compiler=gcc-10
+
+# Linux NVCC
+build:nvcc-gcc --crosstool_top=//tools/toolchain/cpp:crosstool --host_crosstool_top=//tools/toolchain/cpp:crosstool --host_compiler=gcc --compiler=nvcc-gcc

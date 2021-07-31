@@ -1,0 +1,6 @@
+# Bazel stuff
+bazel-bin
+bazel-kalman-cuda
+bazel-testlogs
+bazel-out
+bazel

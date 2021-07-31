@@ -1,0 +1,5 @@
+load("@clang_linux//:toolchain_config.bzl", "cc_toolchain_config")
+
+cc_toolchain_config(
+    name = "clang_linux_config"
+)

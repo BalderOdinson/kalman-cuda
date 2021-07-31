@@ -1,0 +1,25 @@
+{
+    "docker.commands.run": "docker run --rm --gpus all --privileged -v /dev:/dev -it ${exposedPorts} ${tag}",
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "bazel.buildifierFixOnFormat": true,
+    "bazel.enableCodeLens": true,
+    "bazel.commandLine.commandArgs": [
+        "--keep_going"
+    ],
+    "files.associations": {
+        "bitset": "cpp",
+        "array": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "cstdio": "cpp"
+    },
+    "cSpell.words": [
+        "cuda",
+        "elif",
+        "fastbuild",
+        "nvcc",
+        "toolchain",
+        "toolchains"
+    ],
+}

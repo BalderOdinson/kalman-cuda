@@ -1,0 +1,35 @@
+cc_library(
+    name = "library2",
+    hdrs = [
+        ":library2.hpp",
+    ],
+    srcs = [
+        ":library2.cpp"
+    ],
+)
+
+cc_library(
+    name = "library1",
+    hdrs = [
+        ":library1.hpp",
+    ],
+    srcs = [
+        ":library1.cpp",
+        ":library11.cpp",
+    ],
+    deps = [
+        ":library2",
+    ],
+)
+
+
+cc_binary(
+    name = "main",
+    srcs = [
+        ":main.cpp"
+    ],
+    deps = [
+        ":library1"
+    ],
+    features = ["native_arch"],
+)
