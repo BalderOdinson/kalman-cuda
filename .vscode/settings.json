@@ -15,10 +15,16 @@
         "cstdio": "cpp"
     },
     "cSpell.words": [
+        "BAZEL",
         "cuda",
+        "depset",
         "elif",
         "fastbuild",
+        "filegroup",
         "nvcc",
+        "objs",
+        "preprocess",
+        "srcs",
         "toolchain",
         "toolchains"
     ],

@@ -4,3 +4,6 @@ bazel-kalman-cuda
 bazel-testlogs
 bazel-out
 bazel
+buildifier
+bazel.exe
+buildifier.exe

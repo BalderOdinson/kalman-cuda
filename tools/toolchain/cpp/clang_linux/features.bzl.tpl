@@ -190,7 +190,7 @@ def features():
             ),
             flag_set(
                 actions = all_cpp_compile_actions,
-                flag_groups = [flag_group(flags = ["-std=%{cpp_standard}", "-stdlib=libc++"])],
+                flag_groups = [flag_group(flags = ["-std=%{cpp_standard}"])],
             ),
         ],
     )
@@ -281,7 +281,7 @@ def features():
                 actions = preprocessor_compile_actions,
                 flag_groups = [
                     flag_group(
-                        flags = ["-isystem" + include_path for include_path in system_include_directories],
+                        flags = ["-isystem=" + include_path for include_path in system_include_directories],
                     ),
                 ],
             ),

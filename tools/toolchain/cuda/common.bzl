@@ -1,10 +1,17 @@
-def configure_features(
+def _configure_features(
+    ctx,
     cuda_toolchain,
     requested_features=[],
     unsupported_features=[]
 ):
-\   features = cuda_toolchain.features
+    features = cuda_toolchain.features
     enabled_features = {}
+
+    # Enable compilation mode feature
+    compilation_mode = ctx.var["COMPILATION_MODE"]
+    if compilation_mode in features:
+        enabled_features[compilation_mode] = features[compilation_mode]
+
     # Find all user enabled features
     for feature_name, _feature in features.items():
         if _feature.enabled and feature_name not in unsupported_features:
@@ -50,34 +57,40 @@ def configure_features(
 
     return enabled_features.keys()
 
-def create_link_variables(
-    objects= [],
+def _create_link_variables(
+    host_compiler_executable = None,
+    host_compiler_arguments = [],
+    objects = [],
     static_libraries = [],
     shared_libraries = [],
-    library_search_directories = None,
     output_file = None,
 ):
     variables = {
-        "objects": objects,
-        "static_libraries": static_libraries,
-        "shared_libraries": shared_libraries,
+        "objects": [object.path for object in objects],
+        "static_libraries": [static_library.path for static_library in static_libraries],
+        "shared_libraries": [shared_library.basename for shared_library in shared_libraries],
+        "library_search_directories": [shared_library.dirname for shared_library in shared_libraries],
     }
 
-    if library_search_directories != None:
-        variables["library_search_directories"] = library_search_directories
+    if host_compiler_executable != None:
+        variables["host_compiler_executable"] = host_compiler_executable
+
+    if host_compiler_arguments:
+        variables["host_compiler_arguments"] = host_compiler_arguments
 
     if output_file != None:
-        variables["output_file"] = output_file
+        variables["output_file"] = output_file.path
 
     return variables
 
-def create_compile_variables(
+def _create_compile_variables(
     source_file = None,
     output_file = None,
-    gpu_arch = None,
+    gpu_arch = "",
     gpu_codes = [],
-    max_reg_count = None,
+    max_reg_count = 0,
     host_compiler_executable = None,
+    host_compiler_arguments = [],
     include_paths = [],
     system_include_paths = [],
     includes = [],
@@ -86,27 +99,33 @@ def create_compile_variables(
         "gpu_codes": gpu_codes,
         "include_paths": include_paths,
         "system_include_paths": system_include_paths,
-        "includes": includes,
+        "includes": [include.path for include in includes],
     }
 
     if source_file != None:
-        variables["source_file"] = source_file
+        variables["source_file"] = source_file.path
 
     if output_file != None:
-        variables["output_file"] = output_file
+        variables["output_file"] = output_file.path
 
-    if gpu_arch != None:
+    if gpu_arch != "":
         variables["gpu_arch"] = gpu_arch
 
-    if max_reg_count != None:
-        variables["max_reg_count"] = max_reg_count
+    if max_reg_count > 0:
+        variables["max_reg_count"] = str(max_reg_count)
 
     if host_compiler_executable != None:
         variables["host_compiler_executable"] = host_compiler_executable
 
+    if host_compiler_arguments:
+        variables["host_compiler_arguments"] = host_compiler_arguments
+
     return variables
 
-def get_memory_inefficient_command_line(
+def _get_nvcc_tool_path(cuda_toolchain):
+    return cuda_toolchain.nvcc_path
+
+def _get_memory_inefficient_command_line(
     cuda_toolchain,
     action_name,
     feature_configuration = [],
@@ -140,7 +159,7 @@ def get_memory_inefficient_command_line(
 
             enabled_flag_sets.append(_flag_set)
 
-    args = [cuda_toolchain.nvcc_path]
+    args = []
 
     for _feature_set in enabled_flag_sets:
         for _flag_group in _feature_set.flag_groups:
@@ -165,3 +184,23 @@ def get_memory_inefficient_command_line(
             args.extend(flags)
 
     return args
+
+def _create_linking_context(
+    object_files = [],
+    static_libraries = [],
+    dynamic_libraries = [],
+):
+    return struct(
+        object_files = object_files,
+        static_libraries = static_libraries,
+        dynamic_libraries = dynamic_libraries,
+    )
+
+cuda_common = struct(
+    configure_features = _configure_features,
+    create_link_variables = _create_link_variables,
+    create_compile_variables = _create_compile_variables,
+    create_linking_context = _create_linking_context,
+    get_nvcc_tool_path = _get_nvcc_tool_path,
+    get_memory_inefficient_command_line = _get_memory_inefficient_command_line,
+)

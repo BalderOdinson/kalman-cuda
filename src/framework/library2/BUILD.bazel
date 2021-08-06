@@ -1,0 +1,14 @@
+package(
+    default_visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "library2",
+    hdrs = [
+        ":library2.hpp",
+    ],
+    srcs = [
+        ":library2.cpp"
+    ],
+    include_prefix = "include",
+)

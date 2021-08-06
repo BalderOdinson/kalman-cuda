@@ -13,7 +13,7 @@ clang_toolchain(
     name = "clang_linux",
     lib_path = "/usr/lib/llvm-11/lib",
     sysroot = "/",
-    cpp_standard = "c++17",
+    cpp_standard = "c++11",
     cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/lib/clang/11.1.0/include",
@@ -42,7 +42,7 @@ gcc_toolchain(
     name = "gcc-10",
     lib_path = "/usr/lib/gcc/x86_64-linux-gnu/10",
     sysroot = "/",
-    cpp_standard = "c++17",
+    cpp_standard = "c++11",
     cxx_builtin_include_directories = [
         "/usr/include",
         "/usr/lib/gcc/x86_64-linux-gnu/10/include",
@@ -82,3 +82,12 @@ register_toolchains(
     "@gcc-10//:cc-toolchain",
     "@nvcc-gcc//:cc-toolchain",
 )
+
+local_repository(
+    name = "rules_cuda",
+    path = "tools/toolchain/cuda",
+)
+
+load("@rules_cuda//:repository.bzl", "cuda_toolchain")
+
+cuda_toolchain()

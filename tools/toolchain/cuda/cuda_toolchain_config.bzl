@@ -1,5 +1,4 @@
-# load("%{name}//:action_names.bzl", "CUDA_ACTION_NAMES")
-load("//tools/toolchain/cuda:action_names.bzl", "CUDA_ACTION_NAMES")
+load("//:action_names.bzl", "CUDA_ACTION_NAMES")
 load(
     "@bazel_tools//tools/cpp:cc_toolchain_config_lib.bzl",
     "feature",
@@ -7,24 +6,17 @@ load(
     "flag_set",
     "with_feature_set",
 )
-
-CudaToolchainConfigInfo = provider(
-    doc = "Information about invoking nvcc",
-    fields = [
-        "nvcc_path",
-        "features",
-    ],
-)
+load("//:providers.bzl", "CudaToolchainConfigInfo")
 
 def create_cuda_toolchain_config(
-    nvcc_path,
+    tools,
     features = []
 ):
     """
     Creates a CudaToolchainConfigInfo provider
 
     Args:
-        nvcc_path: nvcc executable path
+        tools: All files required to build cuda code (usually everything inside cuda folder)
         features: A list of features
 
     Returns:
@@ -57,7 +49,7 @@ def create_cuda_toolchain_config(
                 ),
                 flag_set(
                     actions = [CUDA_ACTION_NAMES.compile],
-                    flag_groups = [flag_group(flags = ["-Xptxas -O3"])],
+                    flag_groups = [flag_group(flags = ["-Xptxas", "-O3"])],
                     with_features = [with_feature_set(features = ["opt"])],
                 ),
                 flag_set(
@@ -104,8 +96,8 @@ def create_cuda_toolchain_config(
                                 "-Wreorder",
                                 "-Wdefault-stream-launch",
                                 "-Wext-lambda-captures-this",
-                                "-Xptxas -warn-double-usage",
-                                "-Xptxas -warn-lmem-usage",
+                                "-Xptxas", "-warn-double-usage",
+                                "-Xptxas", "-warn-lmem-usage",
                             ],
                         ),
                     ],
@@ -120,7 +112,7 @@ def create_cuda_toolchain_config(
                     actions = [CUDA_ACTION_NAMES.compile],
                     flag_groups = [
                         flag_group(
-                            flags = ["-arch %{gpu_arch}"],
+                            flags = ["-arch", "%{gpu_arch}"],
                             expand_if_available = "gpu_arch",
                         ),
                     ],
@@ -135,7 +127,7 @@ def create_cuda_toolchain_config(
                     actions = [CUDA_ACTION_NAMES.compile],
                     flag_groups = [
                         flag_group(
-                            flags = ["-code %{gpu_codes}"],
+                            flags = ["-code", "%{gpu_codes}"],
                             expand_if_available = "gpu_arch",
                             iterate_over = "gpu_codes",
                         ),
@@ -151,7 +143,7 @@ def create_cuda_toolchain_config(
                     actions = [CUDA_ACTION_NAMES.compile],
                     flag_groups = [
                         flag_group(
-                            flags = ["-maxrregcount %{max_reg_count}"],
+                            flags = ["-maxrregcount", "%{max_reg_count}"],
                             expand_if_available = "max_reg_count",
                         ),
                     ],
@@ -169,7 +161,7 @@ def create_cuda_toolchain_config(
             enabled = True,
             flag_sets = [
                 flag_set(
-                    actions = [CUDA_ACTION_NAMES.compile],
+                    actions = [CUDA_ACTION_NAMES.compile, CUDA_ACTION_NAMES.link],
                     flag_groups = [
                         flag_group(
                             flags = [
@@ -180,7 +172,7 @@ def create_cuda_toolchain_config(
                     with_features = [with_feature_set(features = ["forward_unknown_args_to_host_compiler"])],
                 ),
                 flag_set(
-                    actions = [CUDA_ACTION_NAMES.compile],
+                    actions = [CUDA_ACTION_NAMES.compile, CUDA_ACTION_NAMES.link],
                     flag_groups = [
                         flag_group(
                             flags = [
@@ -191,19 +183,25 @@ def create_cuda_toolchain_config(
                     with_features = [with_feature_set(features = ["allow_unsupported_compiler"])],
                 ),
                 flag_set(
-                    actions = [CUDA_ACTION_NAMES.compile],
+                    actions = [CUDA_ACTION_NAMES.compile, CUDA_ACTION_NAMES.link],
                     flag_groups = [
                         flag_group(
                             flags = [
-                                "-ccbin %{host_compiler_executable}"
+                                "-ccbin", "%{host_compiler_executable}"
                             ],
                             expand_if_available = "host_compiler_executable",
+                        ),
+                        flag_group(
+                            flags = [
+                                "-Xcompiler", "%{host_compiler_arguments}"
+                            ],
+                            iterate_over = "host_compiler_arguments",
                         ),
                     ],
                 ),
             ],
         ),
-        "forward_unknown_args_to_host_compiler": feature(name = "forward_unknown_args_to_host_compiler", enabled = True),
+        "forward_unknown_args_to_host_compiler": feature(name = "forward_unknown_args_to_host_compiler"),
         "allow_unsupported_compiler": feature(name = "allow_unsupported_compiler"),
         "compile_device_code_flag": feature(
             name = "compile_device_code_flag",
@@ -276,7 +274,7 @@ def create_cuda_toolchain_config(
                     flag_groups = [
                         flag_group(
                             expand_if_available = "output_file",
-                            flags = ["-o %{output_file}"],
+                            flags = ["-o", "%{output_file}"],
                         ),
                     ],
                 ),
@@ -290,7 +288,7 @@ def create_cuda_toolchain_config(
                     actions = [CUDA_ACTION_NAMES.compile],
                     flag_groups = [
                         flag_group(
-                            flags = ["-include %{includes}"],
+                            flags = ["-include", "%{includes}"],
                             iterate_over = "includes",
                         ),
                     ],
@@ -305,7 +303,7 @@ def create_cuda_toolchain_config(
                     actions = [CUDA_ACTION_NAMES.link],
                     flag_groups = [
                         flag_group(
-                            flags = ["-L %{library_search_directories}"],
+                            flags = ["-L", "%{library_search_directories}"],
                             iterate_over = "library_search_directories",
                         ),
                     ],
@@ -320,7 +318,7 @@ def create_cuda_toolchain_config(
                     actions = [CUDA_ACTION_NAMES.link],
                     flag_groups = [
                         flag_group(
-                            flags = ["-l%{static_libraries}"],
+                            flags = ["%{static_libraries}"],
                             iterate_over = "static_libraries",
                         ),
                         flag_group(
@@ -344,7 +342,7 @@ def create_cuda_toolchain_config(
                     flag_groups = [
                         flag_group(
                             expand_if_available = "output_file",
-                            flags = ["-o %{output_file}"],
+                            flags = ["-o", "%{output_file}"],
                         ),
                     ],
                 ),
@@ -363,6 +361,6 @@ def create_cuda_toolchain_config(
         merged_features[feature_name] = default_features[feature_name]
 
     return CudaToolchainConfigInfo(
-        nvcc_path = nvcc_path,
+        tools = tools,
         features = merged_features,
     )

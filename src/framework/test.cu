@@ -1,12 +1,12 @@
 #include <cuda.h>
 #include <cstdio>
+#include "sum.cuh"
 
 __global__ void cuda_hello(){
-    printf("Hello World from GPU!\n");
+    printf("Hello World from GPU %d!\n", sum(2, 3));
 }
 
-int main() {
+void hello_world_gpu() {
     cuda_hello<<<1,1>>>();
     cudaDeviceSynchronize();
-    return 0;
 }
